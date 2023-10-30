@@ -60,7 +60,7 @@ class Mailing(models.Model):
     recipients = models.ManyToManyField(Client, verbose_name='получатели')
     start_time = models.DateTimeField(verbose_name='время начала')
     end_time = models.DateTimeField(verbose_name='время окончания')
-    content = models.OneToOneField(Message, on_delete=models.CASCADE, verbose_name='Содержание')
+    content = models.OneToOneField(Message, on_delete=models.CASCADE, verbose_name='Письмо')
 
     class Meta:
         verbose_name = 'рассылка'
