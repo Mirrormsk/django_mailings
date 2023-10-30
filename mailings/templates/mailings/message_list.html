@@ -26,24 +26,17 @@
             <thead>
 
             <tr>
-                <th scope="col">Название</th>
-                <th scope="col">Периодичность</th>
-                <th scope="col">Начало</th>
-                <th scope="col">Завершение</th>
-                <th scope="col">Статус</th>
-                <th scope="col">Редактировать</th>
+                <th scope="col">Заголовок</th>
+                <th scope="col">Текст</th>
             </tr>
             </thead>
             <tbody>
 
             {% for object in object_list %}
+                <p>{{ object.email }}</p>
                 <tr>
-                    <td>{{ object.name }}</td>
-                    <td>{{ object.period }}</td>
-                    <td>{{ object.start_time }}</td>
-                    <td>{{ object.end_time }}</td>
-                    <td>{{ object.status }}</td>
-                    <td><a href="{% url 'mailings:mailing_edit' object.pk %}">Редактировать</a></td>
+                    <td>{{ object.title }}</td>
+                    <td>{{ object.body|truncatechars:70 }}</td>
                 </tr>
 
 
@@ -54,8 +47,8 @@
         </table>
     </div>
     <div class="row">
-        <div class="col-2 my-2"><a href="{% url 'mailings:mailing_create' %}" class="btn btn-primary">Добавить
-            рассылку</a>
+        <div class="col-2 my-2"><a href="{% url 'mailings:messages_create' %}" class="btn btn-primary">Добавить
+            письмо</a>
         </div>
     </div>
 {% endblock %}

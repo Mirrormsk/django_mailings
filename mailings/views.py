@@ -1,7 +1,8 @@
+from django.contrib.admin.widgets import AdminDateWidget
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, UpdateView
 
-from .models import Mailing, Client, Periods
+from .models import Mailing, Client, Periods, Message
 
 
 class MailingListView(ListView):
@@ -10,8 +11,26 @@ class MailingListView(ListView):
 
 class MailingCreateView(CreateView):
     model = Mailing
-    fields = ('name', 'period', 'start_time', 'end_time')
+    fields = ('name', 'period', 'start_time', 'end_time', 'content')
     success_url = reverse_lazy('mailings:mailings_list')
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['start_time'].widget = AdminDateWidget(attrs={'type': 'date'})
+        form.fields['end_time'].widget = AdminDateWidget(attrs={'type': 'date'})
+        return form
+
+
+class MailingUpdateView(UpdateView):
+    model = Mailing
+    fields = ('name', 'period', 'start_time', 'end_time', 'content')
+    success_url = reverse_lazy('mailings:mailings_list')
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['start_time'].widget = AdminDateWidget(attrs={'type': 'date'})
+        form.fields['end_time'].widget = AdminDateWidget(attrs={'type': 'date'})
+        return form
 
 
 class ClientCreateView(CreateView):
@@ -32,3 +51,13 @@ class PeriodsCreateView(CreateView):
 
 class PeriodsListView(ListView):
     model = Periods
+
+
+class MessageCreateView(CreateView):
+    model = Message
+    fields = ('title', 'body')
+    success_url = reverse_lazy('mailings:messages_list')
+
+
+class MessageListView(ListView):
+    model = Message
