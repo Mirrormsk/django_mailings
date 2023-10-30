@@ -37,3 +37,22 @@ class Mailing(models.Model):
     start_time = models.DateTimeField(verbose_name='время начала')
     end_time = models.DateTimeField(verbose_name='время окончания')
     content = models.OneToOneField(Message, on_delete=models.CASCADE, verbose_name='Содержание')
+
+
+class MailingLog(models.Model):
+    STATUS_SUCCESS = 'success'
+    STATUS_FAILED = 'fail'
+    STATUS_ERROR = 'error'
+
+    STATUSES = (
+        (STATUS_SUCCESS, 'Доставлено'),
+        (STATUS_FAILED, 'Не доставлено'),
+        (STATUS_ERROR, 'Ошибка'),
+    )
+
+    time = models.DateTimeField(auto_now_add=True, verbose_name='время')
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name='получатель')
+    mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, verbose_name='рассылка')
+    status = models.CharField(max_length=20, choices=STATUSES, verbose_name='статус')
+    error_message = models.CharField(max_length=250, verbose_name='Текст ошибки', blank=True, null=True)
+
