@@ -8,7 +8,7 @@ class Client(models.Model):
     note = models.CharField(max_length=300, verbose_name='комментарий')
 
 
-class Periods(models.TextChoices):
+class Periods(models.Model):
     name = models.CharField(max_length=50, verbose_name='название')
     pattern = models.CharField(max_length=20, verbose_name='cron-шаблон')
 
@@ -28,7 +28,7 @@ class Mailing(models.Model):
         (STATUS_STARTED, 'Запущена'),
         (STATUS_FINISHED, 'Завершена'),
     )
-
+    name = models.CharField(max_length=150, verbose_name='Название')
     status = models.CharField(max_length=20, choices=STATUSES, verbose_name='статус', default=STATUS_CREATED)
     period = models.ForeignKey(Periods, on_delete=models.CASCADE, verbose_name='периодичность')
 
