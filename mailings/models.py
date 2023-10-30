@@ -7,15 +7,39 @@ class Client(models.Model):
     email = models.EmailField(verbose_name='email')
     note = models.CharField(max_length=300, verbose_name='комментарий')
 
+    class Meta:
+        verbose_name = 'клиент'
+        verbose_name_plural = 'клиенты'
+
+    def full_name(self):
+        return f"{self.first_name} {self.last_name[:1]}"
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name[:1]}. ({self.email})"
+
 
 class Periods(models.Model):
     name = models.CharField(max_length=50, verbose_name='название')
     pattern = models.CharField(max_length=20, verbose_name='cron-шаблон')
 
+    class Meta:
+        verbose_name = 'период'
+        verbose_name_plural = 'периоды'
+
+    def __str__(self):
+        return self.name
+
 
 class Message(models.Model):
     body = models.TextField(verbose_name='содержимое')
     title = models.CharField(max_length=150, verbose_name='заголовок')
+
+    class Meta:
+        verbose_name = 'письмо'
+        verbose_name_plural = 'письма'
+
+    def __str__(self):
+        return self.title
 
 
 class Mailing(models.Model):
@@ -38,6 +62,13 @@ class Mailing(models.Model):
     end_time = models.DateTimeField(verbose_name='время окончания')
     content = models.OneToOneField(Message, on_delete=models.CASCADE, verbose_name='Содержание')
 
+    class Meta:
+        verbose_name = 'рассылка'
+        verbose_name_plural = 'рассылки'
+
+    def __str__(self):
+        return self.name
+
 
 class MailingLog(models.Model):
     STATUS_SUCCESS = 'success'
@@ -56,3 +87,9 @@ class MailingLog(models.Model):
     status = models.CharField(max_length=20, choices=STATUSES, verbose_name='статус')
     error_message = models.CharField(max_length=250, verbose_name='Текст ошибки', blank=True, null=True)
 
+    class Meta:
+        verbose_name = 'лог'
+        verbose_name_plural = 'логи'
+
+    def __str__(self):
+        return f"{self.client}, {self.status}, {self.time}"
