@@ -28,6 +28,7 @@ class Mailing(models.Model):
         (STATUS_STARTED, 'Запущена'),
         (STATUS_FINISHED, 'Завершена'),
     )
+
     name = models.CharField(max_length=150, verbose_name='Название')
     status = models.CharField(max_length=20, choices=STATUSES, verbose_name='статус', default=STATUS_CREATED)
     period = models.ForeignKey(Periods, on_delete=models.CASCADE, verbose_name='периодичность')
@@ -35,4 +36,4 @@ class Mailing(models.Model):
     recipients = models.ManyToManyField(Client, verbose_name='получатели')
     start_time = models.DateTimeField(verbose_name='время начала')
     end_time = models.DateTimeField(verbose_name='время окончания')
-    content = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name='Содержание')
+    content = models.OneToOneField(Message, on_delete=models.CASCADE, verbose_name='Содержание')
