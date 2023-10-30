@@ -26,18 +26,16 @@
             <thead>
 
             <tr>
-                <th scope="col">Название</th>
-                <th scope="col">Периодичность</th>
-                <th scope="col">Статус</th>
+                <th scope="col">Имя</th>
+                <th scope="col">Email</th>
             </tr>
             </thead>
             <tbody>
 
             {% for object in object_list %}
                 <tr>
-                    <td>{{ object.name }}</td>
-                    <td>{{ object.period }}</td>
-                    <td>{{ object.status }}</td>
+                    <td>{{ object.full_name }}</td>
+                    <td>{{ object.email }}</td>
                 </tr>
 
 
@@ -48,8 +46,8 @@
         </table>
     </div>
     <div class="row">
-        <div class="col-2 my-2"><a href="{% url 'mailings:mailing_create' %}" class="btn btn-primary">Добавить
-            рассылку</a>
+        <div class="col-2 my-2"><a href="{% url 'mailings:client_create' %}" class="btn btn-primary">Добавить
+            клиента</a>
         </div>
     </div>
 {% endblock %}

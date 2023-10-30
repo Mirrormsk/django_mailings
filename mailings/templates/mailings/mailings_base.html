@@ -264,20 +264,29 @@
                         <ul class="nav flex-column">
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page"
-                                   href="#">
+                                   href="{% url 'mailings:client_list' %}">
                                     <svg class="bi">
                                         <use xlink:href="#cart"/>
                                     </svg>
-                                    <strong>Товары</strong>
+                                    <strong>Клиенты</strong>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center gap-2"
-                                   href="#">
+                                   href="{% url 'mailings:mailings_list' %}">
                                     <svg class="bi">
                                         <use xlink:href="#file-earmark"/>
                                     </svg>
-                                    Статьи
+                                    Рассылки
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center gap-2"
+                                   href="{% url 'mailings:periods_list' %}">
+                                    <svg class="bi">
+                                        <use xlink:href="#file-earmark"/>
+                                    </svg>
+                                    Периоды
                                 </a>
                             </li>
                             {#                            <li class="nav-item">#}

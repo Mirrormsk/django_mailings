@@ -12,7 +12,7 @@ class Client(models.Model):
         verbose_name_plural = 'клиенты'
 
     def full_name(self):
-        return f"{self.first_name} {self.last_name[:1]}"
+        return f"{self.first_name} {self.last_name[:1]}."
 
     def __str__(self):
         return f"{self.first_name} {self.last_name[:1]}. ({self.email})"
@@ -20,7 +20,7 @@ class Client(models.Model):
 
 class Periods(models.Model):
     name = models.CharField(max_length=50, verbose_name='название')
-    pattern = models.CharField(max_length=20, verbose_name='cron-шаблон')
+    pattern = models.CharField(max_length=20, verbose_name='cron-шаблон', unique=True)
 
     class Meta:
         verbose_name = 'период'
