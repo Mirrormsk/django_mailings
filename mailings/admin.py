@@ -10,9 +10,14 @@ class ClientAdmin(admin.ModelAdmin):
 
 @admin.register(Periods)
 class PeriodsAdmin(admin.ModelAdmin):
-    list_display = ('name', 'pattern')
+    list_display = ('name', 'duration')
 
 
 @admin.register(Mailing)
 class MailingAdmin(admin.ModelAdmin):
-    list_display = ('name', )
+    list_display = ('name',)
+
+
+@admin.register(Audience)
+class AudienceAdmin(admin.ModelAdmin):
+    list_display = ('name',)

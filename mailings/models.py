@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.db import models
 
 
@@ -32,7 +34,7 @@ class Audience(models.Model):
 
 class Periods(models.Model):
     name = models.CharField(max_length=50, verbose_name='название')
-    pattern = models.CharField(max_length=20, verbose_name='cron-шаблон', unique=True)
+    duration = models.DurationField(unique=True, verbose_name='Повторять каждые', default=timedelta(days=7))
 
     class Meta:
         verbose_name = 'период'

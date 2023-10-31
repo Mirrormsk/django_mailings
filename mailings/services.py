@@ -1,7 +1,7 @@
-from datetime import datetime
 from smtplib import SMTPException
 
 from django.core.mail import send_mail
+from django.utils import timezone
 
 from config.settings import DEFAULT_FROM_EMAIL
 from .models import Mailing, Client, MailingLog
@@ -38,15 +38,14 @@ class MailService:
             log_obj.save()
 
     def process_mailing(self, mailing: Mailing):
-        recipients = Mailing.audience.recipients.all()
+        recipients = mailing.audience.recipients.all()
         for recipient in recipients:
             self.send_one_email(mailing, recipient)
 
     def process_mailing_list(self):
         mailings = self.get_mailings()
-        now = datetime.now()
+        now = timezone.now()
 
         for mailing in mailings:
             if now >= mailing.start_time:
                 self.process_mailing(mailing)
-
