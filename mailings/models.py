@@ -96,7 +96,7 @@ class MailingLog(models.Model):
     )
 
     time = models.DateTimeField(auto_now_add=True, verbose_name='время')
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name='получатель')
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name='получатель', related_name='logs')
     mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, verbose_name='рассылка')
     status = models.CharField(max_length=20, choices=STATUSES, verbose_name='статус')
     error_message = models.CharField(max_length=250, verbose_name='Текст ошибки', blank=True, null=True)

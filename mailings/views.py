@@ -1,4 +1,5 @@
-from django.contrib.admin.widgets import AdminDateWidget
+from django.contrib.admin.widgets import AdminSplitDateTime
+from django.forms.widgets import SplitDateTimeWidget
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView
 
@@ -16,8 +17,8 @@ class MailingCreateView(CreateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields['start_time'].widget = AdminDateWidget(attrs={'type': 'date'})
-        form.fields['end_time'].widget = AdminDateWidget(attrs={'type': 'date'})
+        form.fields['start_time'].widget = AdminSplitDateTime()
+        form.fields['end_time'].widget = AdminSplitDateTime()
         return form
 
 
@@ -28,8 +29,8 @@ class MailingUpdateView(UpdateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields['start_time'].widget = AdminDateWidget(attrs={'type': 'datetime'})
-        form.fields['end_time'].widget = AdminDateWidget(attrs={'type': 'date'})
+        form.fields['start_time'].widget = AdminSplitDateTime()
+        form.fields['end_time'].widget = AdminSplitDateTime()
         return form
 
 
@@ -49,7 +50,7 @@ class RecipientListView(ListView):
 
 class PeriodsCreateView(CreateView):
     model = Periods
-    fields = ('name', 'pattern')
+    fields = ('name', 'duration')
     success_url = reverse_lazy('mailings:periods_list')
 
 

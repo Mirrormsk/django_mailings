@@ -21,6 +21,7 @@ class MailService:
                 from_email=DEFAULT_FROM_EMAIL,
                 message=mailing.content.body,
                 recipient_list=[recipient.email],
+                fail_silently=False,
             )
         except SMTPException as ex:
             error_message = ex
@@ -40,7 +41,9 @@ class MailService:
     def process_mailing(self, mailing: Mailing):
         recipients = mailing.audience.recipients.all()
         for recipient in recipients:
-            self.send_one_email(mailing, recipient)
+            last_log: MailingLog = recipient.logs.last()
+            if timezone.now() - last_log.time >= mailing.period.duration:
+                self.send_one_email(mailing, recipient)
 
     def process_mailing_list(self):
         mailings = self.get_mailings()

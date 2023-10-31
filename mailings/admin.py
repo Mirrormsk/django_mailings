@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Client, Periods, Mailing, Audience
+from .models import Client, Periods, Mailing, Audience, MailingLog
 
 
 @admin.register(Client)
@@ -21,3 +21,13 @@ class MailingAdmin(admin.ModelAdmin):
 @admin.register(Audience)
 class AudienceAdmin(admin.ModelAdmin):
     list_display = ('name',)
+
+
+@admin.register(MailingLog)
+class MailingLogAdmin(admin.ModelAdmin):
+    list_display = (
+        'time',
+        'mailing',
+        'client',
+        'status',
+    )
