@@ -18,6 +18,18 @@ class Client(models.Model):
         return f"{self.first_name} {self.last_name[:1]}. ({self.email})"
 
 
+class Audience(models.Model):
+    name = models.CharField(max_length=50, verbose_name='название')
+    recipients = models.ManyToManyField(Client, verbose_name='получатели')
+
+    class Meta:
+        verbose_name = 'аудитория'
+        verbose_name_plural = 'аудитории'
+
+    def __str__(self):
+        return self.name
+
+
 class Periods(models.Model):
     name = models.CharField(max_length=50, verbose_name='название')
     pattern = models.CharField(max_length=20, verbose_name='cron-шаблон', unique=True)
@@ -57,7 +69,7 @@ class Mailing(models.Model):
     status = models.CharField(max_length=20, choices=STATUSES, verbose_name='статус', default=STATUS_CREATED)
     period = models.ForeignKey(Periods, on_delete=models.CASCADE, verbose_name='периодичность')
 
-    recipients = models.ManyToManyField(Client, verbose_name='получатели')
+    audience = models.ForeignKey(Audience, verbose_name='аудитория', on_delete=models.CASCADE, null=True, blank=True)
     start_time = models.DateTimeField(verbose_name='время начала')
     end_time = models.DateTimeField(verbose_name='время окончания')
     content = models.OneToOneField(Message, on_delete=models.CASCADE, verbose_name='Письмо')

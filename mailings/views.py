@@ -28,7 +28,7 @@ class MailingUpdateView(UpdateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields['start_time'].widget = AdminDateWidget(attrs={'type': 'date'})
+        form.fields['start_time'].widget = AdminDateWidget(attrs={'type': 'datetime'})
         form.fields['end_time'].widget = AdminDateWidget(attrs={'type': 'date'})
         return form
 
@@ -40,6 +40,10 @@ class ClientCreateView(CreateView):
 
 
 class ClientListView(ListView):
+    model = Client
+
+
+class RecipientListView(ListView):
     model = Client
 
 
