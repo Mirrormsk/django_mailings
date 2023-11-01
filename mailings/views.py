@@ -3,7 +3,7 @@ from django.forms.widgets import SplitDateTimeWidget
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView
 
-from .models import Mailing, Client, Periods, Message
+from .models import Mailing, Client, Periods, Message, MailingLog
 
 DATETIME_WIDGET = SplitDateTimeWidget(date_attrs={'type': 'date'}, time_attrs={'type': 'time'})
 
@@ -68,3 +68,7 @@ class MessageCreateView(CreateView):
 
 class MessageListView(ListView):
     model = Message
+
+
+class MailingLogListView(ListView):
+    model = MailingLog
