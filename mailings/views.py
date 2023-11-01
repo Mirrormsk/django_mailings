@@ -1,5 +1,6 @@
 from django.forms import SplitDateTimeField
 from django.forms.widgets import SplitDateTimeWidget
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView
 
@@ -62,3 +63,17 @@ class PeriodsListView(ListView):
 
 class MailingLogListView(ListView):
     model = MailingLog
+
+
+def stop_mailing(request, pk):
+    mailing = Mailing.objects.get(pk=pk)
+    mailing.status = Mailing.STATUS_FINISHED
+    mailing.save()
+    return redirect(reverse_lazy('mailings:mailings_list'))
+
+
+def start_mailing(request, pk):
+    mailing = Mailing.objects.get(pk=pk)
+    mailing.status = Mailing.STATUS_CREATED
+    mailing.save()
+    return redirect(reverse_lazy('mailings:mailings_list'))

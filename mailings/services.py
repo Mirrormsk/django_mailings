@@ -54,9 +54,9 @@ class MailService(MailingStatusesService):
     def send_one_email(mailing: Mailing, recipient: Client):
         try:
             result = send_mail(
-                subject=mailing.content.title,
+                subject=mailing.message_title,
                 from_email=DEFAULT_FROM_EMAIL,
-                message=mailing.content.body,
+                message=mailing.message_body,
                 recipient_list=[recipient.email],
                 fail_silently=False,
             )
