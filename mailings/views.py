@@ -3,7 +3,7 @@ from django.forms.widgets import SplitDateTimeWidget
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView
 
-from .models import Mailing, Client, Periods, Message, MailingLog
+from .models import Mailing, Client, Periods, MailingLog
 
 DATETIME_WIDGET = SplitDateTimeWidget(date_attrs={'type': 'date'}, time_attrs={'type': 'time'})
 
@@ -14,7 +14,7 @@ class MailingListView(ListView):
 
 class MailingCreateView(CreateView):
     model = Mailing
-    fields = ('name', 'period', 'audience', 'start_time', 'end_time', 'content')
+    fields = ('name', 'period', 'audience', 'start_time', 'end_time', 'message_title', 'message_body')
     success_url = reverse_lazy('mailings:mailings_list')
 
     def get_form(self, form_class=None):
@@ -26,7 +26,7 @@ class MailingCreateView(CreateView):
 
 class MailingUpdateView(UpdateView):
     model = Mailing
-    fields = ('name', 'period', 'audience', 'start_time', 'end_time', 'content')
+    fields = ('name', 'period', 'audience', 'start_time', 'end_time', 'message_title', 'message_body')
     success_url = reverse_lazy('mailings:mailings_list')
 
     def get_form(self, form_class=None):
@@ -58,16 +58,6 @@ class PeriodsCreateView(CreateView):
 
 class PeriodsListView(ListView):
     model = Periods
-
-
-class MessageCreateView(CreateView):
-    model = Message
-    fields = ('title', 'body')
-    success_url = reverse_lazy('mailings:messages_list')
-
-
-class MessageListView(ListView):
-    model = Message
 
 
 class MailingLogListView(ListView):

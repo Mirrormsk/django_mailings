@@ -44,18 +44,6 @@ class Periods(models.Model):
         return self.name
 
 
-class Message(models.Model):
-    body = models.TextField(verbose_name='содержимое')
-    title = models.CharField(max_length=150, verbose_name='заголовок')
-
-    class Meta:
-        verbose_name = 'письмо'
-        verbose_name_plural = 'письма'
-
-    def __str__(self):
-        return self.title
-
-
 class Mailing(models.Model):
     STATUS_CREATED = 'created'
     STATUS_STARTED = 'started'
@@ -74,7 +62,10 @@ class Mailing(models.Model):
     audience = models.ForeignKey(Audience, verbose_name='аудитория', on_delete=models.CASCADE, null=True, blank=True)
     start_time = models.DateTimeField(verbose_name='время начала')
     end_time = models.DateTimeField(verbose_name='время окончания')
-    content = models.OneToOneField(Message, on_delete=models.CASCADE, verbose_name='Письмо')
+    # content = models.OneToOneField(Message, on_delete=models.CASCADE, verbose_name='Письмо')
+
+    message_title = models.CharField(max_length=150, verbose_name='заголовок')
+    message_body = models.TextField(verbose_name='текст рассылки')
 
     class Meta:
         verbose_name = 'рассылка'
