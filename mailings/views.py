@@ -6,7 +6,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from .models import Mailing, Client, Periods, MailingLog
 
-DATETIME_WIDGET = SplitDateTimeWidget(date_attrs={'type': 'date'}, time_attrs={'type': 'time'})
+DATETIME_WIDGET = SplitDateTimeWidget(date_attrs={'type': 'date', 'class': 'my-2'}, time_attrs={'type': 'time'})
 
 
 class MailingListView(ListView):
