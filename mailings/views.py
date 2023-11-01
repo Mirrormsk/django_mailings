@@ -12,6 +12,10 @@ DATETIME_WIDGET = SplitDateTimeWidget(date_attrs={'type': 'date'}, time_attrs={'
 class MailingListView(ListView):
     model = Mailing
 
+    extra_context = {
+        'title': 'Рассылки'
+    }
+
 
 class MailingDeleteView(DeleteView):
     model = Mailing
@@ -51,9 +55,9 @@ class ClientCreateView(CreateView):
 class ClientListView(ListView):
     model = Client
 
-
-class RecipientListView(ListView):
-    model = Client
+    extra_context = {
+        'title': 'Клиенты'
+    }
 
 
 class PeriodsCreateView(CreateView):
@@ -65,10 +69,17 @@ class PeriodsCreateView(CreateView):
 class PeriodsListView(ListView):
     model = Periods
 
+    extra_context = {
+        'title': 'Периоды'
+    }
+
 
 class MailingLogListView(ListView):
     model = MailingLog
 
+    extra_context = {
+        'title': 'Логи'
+    }
 
 def stop_mailing(request, pk):
     mailing = Mailing.objects.get(pk=pk)
