@@ -126,7 +126,7 @@ SERVER_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = EMAIL_HOST_USER
 
 CRONJOBS = [
-    ('*/5 * * * *', 'mailings.tasks.check_mailing_list'),
+    ('*/1 * * * *', 'mailings.tasks.check_mailing_list'),
 ]
 
 CRONTAB_DJANGO_SETTINGS = 'config.settings'

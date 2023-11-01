@@ -42,7 +42,7 @@
                     <td>{{ object.period }}</td>
                     <td>{{ object.start_time }}</td>
                     <td>{{ object.end_time }}</td>
-                    <td>{{ object.status }}</td>
+                    <td>{{ object.get_status_display }}</td>
                     <td><a href="{% url 'mailings:mailing_edit' object.pk %}">Редактировать</a></td>
                 </tr>
 
