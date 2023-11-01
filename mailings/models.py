@@ -59,7 +59,7 @@ class Mailing(models.Model):
     status = models.CharField(max_length=20, choices=STATUSES, verbose_name='статус', default=STATUS_CREATED)
     period = models.ForeignKey(Periods, on_delete=models.CASCADE, verbose_name='периодичность')
 
-    audience = models.ForeignKey(Audience, verbose_name='аудитория', on_delete=models.CASCADE, null=True, blank=True)
+    audience = models.ForeignKey(Audience, verbose_name='аудитория', on_delete=models.CASCADE)
     start_time = models.DateTimeField(verbose_name='время начала')
     end_time = models.DateTimeField(verbose_name='время окончания')
     # content = models.OneToOneField(Message, on_delete=models.CASCADE, verbose_name='Письмо')
