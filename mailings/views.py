@@ -31,8 +31,8 @@ class MailingUpdateView(UpdateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields['start_time'].widget = DATETIME_WIDGET
-        form.fields['end_time'].widget = DATETIME_WIDGET
+        form.fields['start_time'] = SplitDateTimeField(widget=DATETIME_WIDGET, label='Время начала')
+        form.fields['end_time'] = SplitDateTimeField(widget=DATETIME_WIDGET, label='Время начала')
         return form
 
 
