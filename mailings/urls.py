@@ -17,9 +17,12 @@ urlpatterns = [
     path('clients/create/', views.ClientCreateView.as_view(), name='client_create'),
     path('clients/', views.ClientListView.as_view(), name='client_list'),
 
+    path('audiences/', views.AudienceListView.as_view(), name='audiences_list'),
+
     path('mailings/periods/create/', views.PeriodsCreateView.as_view(), name='periods_create'),
     path('mailings/periods/', views.PeriodsListView.as_view(), name='periods_list'),
 
     path('mailing_logs/', views.MailingLogListView.as_view(), name='mailing_log_list'),
+
 
 ]
