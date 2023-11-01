@@ -2,7 +2,7 @@ from django.forms import SplitDateTimeField
 from django.forms.widgets import SplitDateTimeWidget
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from .models import Mailing, Client, Periods, MailingLog
 
@@ -11,6 +11,11 @@ DATETIME_WIDGET = SplitDateTimeWidget(date_attrs={'type': 'date'}, time_attrs={'
 
 class MailingListView(ListView):
     model = Mailing
+
+
+class MailingDeleteView(DeleteView):
+    model = Mailing
+    success_url = reverse_lazy('mailings:mailings_list')
 
 
 class MailingCreateView(CreateView):

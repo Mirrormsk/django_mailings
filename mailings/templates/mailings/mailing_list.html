@@ -55,7 +55,8 @@
                             <li class="mx-auto"><a href="{% url 'mailings:mailing_edit' object.pk %}" class="text-info"
                                                    data-toggle="tooltip" title="edit" data-original-title="Edit"><i
                                     class="fas fa-pencil-alt"></i></a></li>
-                            <li class="mx-auto"><a href="#" class="text-danger" data-toggle="tooltip" title=""
+                            <li class="mx-auto"><a href="{% url 'mailings:mailing_delete' object.pk %}"
+                                                   class="text-danger" data-toggle="tooltip" title=""
                                                    data-original-title="Delete"><i class="fa-solid fa-trash"
                                                                                    style="color: #ff4013;"></i></a></li>
                         </ul>
