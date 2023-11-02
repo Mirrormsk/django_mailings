@@ -77,9 +77,27 @@ class PeriodsListView(ListView):
 class MailingLogListView(ListView):
     model = MailingLog
 
-    extra_context = {
-        'title': 'Логи'
-    }
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+
+        context_data['mailings'] = Mailing.objects.all()
+        context_data['title'] = 'Логи'
+        context_data['nbar'] = 'logs'
+        context_data['selected_mailing_pk'] = int(self.request.POST.get('category', 0))
+
+        return context_data
+
+    def get_queryset(self):
+        mailing_pk = self.request.POST.get('mailing', 0)
+
+        mailing_pk_list = list(Mailing.objects.values_list('pk', flat=True))
+
+        if int(mailing_pk) in mailing_pk_list:
+            return self.model.objects.filter(mailing_id=mailing_pk)
+        return self.model.objects.all()
+
+    def post(self, request):
+        return self.get(request)
 
 
 class AudienceListView(ListView):

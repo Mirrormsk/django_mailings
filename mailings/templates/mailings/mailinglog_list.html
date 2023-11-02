@@ -2,23 +2,23 @@
 
 
 {% block content %}
-    {#    <div class="col-3">#}
-    {#        <form method="post" id="category_filter_form">#}
-    {#            {% csrf_token %}#}
-    {# Category #}
-    {#            <div class="mb-3">#}
-    {#                <label for="product_category" class="form-label">Категория</label>#}
-    {#                <select class="form-select" id="product_category" name="category" form="category_filter_form" required>#}
-    {#                    <option value="0">Все</option>#}
-    {#                    {% for category in categories %}#}
-    {#                        <option value="{{ category.pk }}"#}
-    {#                                {% if category.pk == selected_category_pk %}selected{% endif %}>{{ category.name }}</option>#}
-    {#                    {% endfor %}#}
-    {#                </select>#}
-    {#            </div>#}
-    {#            <input type="submit" value="Фильтровать">#}
-    {#        </form>#}
-    {#    </div>#}
+    <div class="col-3">
+        <form method="post" id="mailings_filter_form">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="mailing" class="form-label">Рассылка</label>
+                <select class="form-select" id="mailing" name="mailing" form="category_filter_form" required>
+                    <option value="0">Все</option>
+                    {% for mailing in mailings %}
+                        <option value="{{ mailing.pk }}"
+                                {% if mailing.pk == selected_mailing_pk %}selected{% endif %}>{{ mailing.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <input class="btn btn-light" type="submit" value="Фильтровать">
+        </form>
+    </div>
 
 
     <div class="table-responsive small">
