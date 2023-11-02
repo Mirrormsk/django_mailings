@@ -13,7 +13,8 @@ class MailingListView(ListView):
     model = Mailing
 
     extra_context = {
-        'title': 'Рассылки'
+        'title': 'Рассылки',
+        'nbar': 'mailings',
     }
 
 
@@ -56,7 +57,8 @@ class ClientListView(ListView):
     model = Client
 
     extra_context = {
-        'title': 'Клиенты'
+        'title': 'Клиенты',
+        'nbar': 'clients'
     }
 
 
@@ -70,7 +72,8 @@ class PeriodsListView(ListView):
     model = Periods
 
     extra_context = {
-        'title': 'Периоды'
+        'title': 'Периоды',
+        'nbar': 'periods',
     }
 
 
@@ -102,6 +105,11 @@ class MailingLogListView(ListView):
 
 class AudienceListView(ListView):
     model = Audience
+
+    extra_context = {
+        'title': "Аудитории",
+        'nbar': 'audiences',
+    }
 
 
 def stop_mailing(request, pk):
