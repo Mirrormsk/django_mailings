@@ -8,7 +8,7 @@
 
             <div class="mb-3">
                 <label for="mailing" class="form-label">Рассылка</label>
-                <select class="form-select" id="mailing" name="mailing" form="category_filter_form" required>
+                <select class="form-select" id="mailing" name="mailing" form="mailings_filter_form" required>
                     <option value="0">Все</option>
                     {% for mailing in mailings %}
                         <option value="{{ mailing.pk }}"

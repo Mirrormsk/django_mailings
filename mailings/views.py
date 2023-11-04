@@ -86,7 +86,7 @@ class MailingLogListView(ListView):
         context_data['mailings'] = Mailing.objects.all()
         context_data['title'] = 'Логи'
         context_data['nbar'] = 'logs'
-        context_data['selected_mailing_pk'] = int(self.request.POST.get('category', 0))
+        context_data['selected_mailing_pk'] = int(self.request.POST.get('mailing', 0))
 
         return context_data
 
