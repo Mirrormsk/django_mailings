@@ -1,3 +1,12 @@
-from django.shortcuts import render
+from django.contrib.auth.views import LoginView as BaseLoginView
+from django.contrib.auth.views import LogoutView as BaseLogoutView
 
-# Create your views here.
+
+class LoginView(BaseLoginView):
+    extra_context = {
+        'title': 'SkyStore - Вход'
+    }
+
+
+class LogoutView(BaseLogoutView):
+    pass
