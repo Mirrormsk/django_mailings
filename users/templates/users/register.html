@@ -1,6 +1,6 @@
 {% extends 'mailings/base.html' %}
-{% load crispy_forms_filters %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/sign-in.css' %}">
@@ -8,16 +8,13 @@
 
 {% block body %}
     <div class="d-flex align-items-center py-4 bg-body-tertiary">
-        <main class="form-signin w-100 m-auto">
+        <main class="form-signin w-100 m-auto form-control">
             <form method="post">
                 {% csrf_token %}
                 {{ form|crispy }}
-
-                <button class="btn btn-primary w-100 py-2" type="submit">Войти</button>
-                <p class="mt-5 mb-3 text-body-secondary">© 2017–2023</p>
+                <button class="btn btn-primary w-100 py-2" type="submit">Регистрация</button>
             </form>
-            <p>Нет учетной записи? <a href="{% url 'users:register' %}">Регистрация</a></p>
+            <p class="my-3">Уже зарегистрированы? <a href="{% url 'users:login' %}">Войти</a></p>
         </main>
     </div>
-
 {% endblock %}
