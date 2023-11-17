@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "django_crontab",
 
     "mailings",
+    "users",
 
 ]
 
@@ -131,3 +132,5 @@ CRONJOBS = [
 
 CRONTAB_DJANGO_SETTINGS = 'config.settings'
 CRONTAB_COMMAND_SUFFIX = "2>&1"
+
+AUTH_USER_MODEL = 'users.User'
