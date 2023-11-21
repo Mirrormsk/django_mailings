@@ -5,11 +5,12 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from .models import Mailing, Client, Periods, MailingLog, Audience
+from users.permissions_mixins import ManagerRequiredMixin
 
 DATETIME_WIDGET = SplitDateTimeWidget(date_attrs={'type': 'date', 'class': 'my-2'}, time_attrs={'type': 'time'})
 
 
-class MailingListView(ListView):
+class MailingListView(ManagerRequiredMixin, ListView):
     model = Mailing
 
     extra_context = {

@@ -67,9 +67,17 @@ class Mailing(models.Model):
     message_title = models.CharField(max_length=150, verbose_name='заголовок')
     message_body = models.TextField(verbose_name='текст рассылки')
 
+    creator = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name='создал')
+
     class Meta:
         verbose_name = 'рассылка'
         verbose_name_plural = 'рассылки'
+        permissions = [
+            (
+                'can_stop_mailing',
+                'Can stop mailing'
+            )
+        ]
 
     def __str__(self):
         return self.name
