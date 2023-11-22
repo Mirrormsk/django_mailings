@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.forms import SplitDateTimeField
 from django.forms.widgets import SplitDateTimeWidget
 from django.shortcuts import redirect
@@ -74,6 +74,10 @@ class ClientCreateView(CreateView):
     model = Client
     fields = ('first_name', 'last_name', 'email', 'note')
     success_url = reverse_lazy('mailings:mailings_list')
+
+    def form_valid(self, form):
+
+        return super().form_valid(form)
 
 
 class ClientListView(ListView):

@@ -8,6 +8,7 @@ class Client(models.Model):
     last_name = models.CharField(max_length=30, verbose_name='фамилия')
     email = models.EmailField(verbose_name='email')
     note = models.CharField(max_length=300, verbose_name='комментарий', null=True, blank=True)
+    creator = models.ForeignKey('users.User', verbose_name='добавил', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'клиент'
@@ -23,6 +24,7 @@ class Client(models.Model):
 class Audience(models.Model):
     name = models.CharField(max_length=50, verbose_name='название')
     recipients = models.ManyToManyField(Client, verbose_name='получатели')
+    creator = models.ForeignKey('users.User', verbose_name='создал', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'аудитория'
