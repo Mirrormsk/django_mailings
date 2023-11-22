@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import LoginView as BaseLoginView
@@ -8,7 +9,7 @@ from django.core.mail import EmailMessage
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView
 
 from users import texts
 from users.forms import UserRegisterForm
@@ -58,6 +59,17 @@ class RegisterView(CreateView):
         activation_email.content_subtype = "html"
         activation_email.send()
         return HttpResponse('Ссылка для подтверждения отправлена на ваш email.')
+
+
+class UserListView(PermissionRequiredMixin, ListView):
+    model = get_user_model()
+
+    permission_required = 'users.view_user'
+
+    extra_context = {
+        'title': 'Пользователи',
+        'nbar': 'users',
+    }
 
 
 def activate_user(request, uid, token):

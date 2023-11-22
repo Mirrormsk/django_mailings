@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.forms import SplitDateTimeField
 from django.forms.widgets import SplitDateTimeWidget
 from django.shortcuts import redirect
@@ -10,8 +11,10 @@ from users.permissions_mixins import ManagerRequiredMixin
 DATETIME_WIDGET = SplitDateTimeWidget(date_attrs={'type': 'date', 'class': 'my-2'}, time_attrs={'type': 'time'})
 
 
-class MailingListView(ManagerRequiredMixin, ListView):
+class MailingListView(PermissionRequiredMixin, ListView):
     model = Mailing
+
+    permission_required = 'users.view_user'
 
     extra_context = {
         'title': 'Рассылки',
@@ -34,6 +37,15 @@ class MailingCreateView(CreateView):
         form.fields['start_time'] = SplitDateTimeField(widget=DATETIME_WIDGET, label='Время начала')
         form.fields['end_time'] = SplitDateTimeField(widget=DATETIME_WIDGET, label='Время завершения')
         return form
+
+    def form_valid(self, form):
+
+        self.object = form.save()
+        user = self.request.user
+        self.object.creator = user
+        self.object.save()
+
+        return super().form_valid(form)
 
 
 class MailingUpdateView(UpdateView):

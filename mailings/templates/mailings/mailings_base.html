@@ -138,7 +138,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page"
+                                <a class="nav-link d-flex align-items-center gap-2" aria-current="page"
                                    href="{% url 'mailings:audiences_list' %}">
                                     <i class="fa-solid fa-users fa-xs"></i>
                                     {% if nbar == 'audiences' %}
@@ -170,6 +170,21 @@
                                     {% endif %}
                                 </a>
                             </li>
+
+                            {% if perms.users.view_user %}
+                            	<li class="nav-item">
+                                <a class="nav-link d-flex align-items-center gap-2"
+                                   href="{% url 'users:users_list' %}">
+                                    <i class="fa-solid fa-user-tie"></i>
+                                    {% if nbar == 'users' %}
+                                        <strong style="text-decoration: underline">Пользователи</strong>
+                                    {% else %}
+                                        Пользователи
+                                    {% endif %}
+                                </a>
+                            </li>
+                            {% endif %}
+
                         </ul>
 
                         <hr class="my-3">
