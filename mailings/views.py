@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
+from users.models import User
 from .models import Mailing, Client, Periods, MailingLog, Audience
 from users.permissions_mixins import ManagerRequiredMixin
 
@@ -14,12 +15,21 @@ DATETIME_WIDGET = SplitDateTimeWidget(date_attrs={'type': 'date', 'class': 'my-2
 class MailingListView(PermissionRequiredMixin, ListView):
     model = Mailing
 
-    permission_required = 'users.view_user'
+    permission_required = 'mailings.view_mailing'
 
     extra_context = {
         'title': 'Рассылки',
         'nbar': 'mailings',
     }
+
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset()
+        user = self.request.user
+
+        if not (user.has_perm('mailings.view_all_mailings') or user.is_superuser):
+            queryset = queryset.filter(creator=user)
+
+        return queryset
 
 
 class MailingDeleteView(DeleteView):
