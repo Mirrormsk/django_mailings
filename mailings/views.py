@@ -40,10 +40,10 @@ class MailingCreateView(CreateView):
 
     def form_valid(self, form):
 
-        self.object = form.save()
+        mailing = form.save(commit=False)
         user = self.request.user
-        self.object.creator = user
-        self.object.save()
+        mailing.creator = user
+        mailing.save()
 
         return super().form_valid(form)
 
