@@ -71,7 +71,7 @@ class MailingUpdateView(UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         mailing = self.get_object()
-        return mailing.creator == self.request.user
+        return mailing.creator == self.request.user or self.request.user.is_superuser
 
 
 class ClientCreateView(LoginRequiredMixin, CreateView):
