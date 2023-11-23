@@ -15,7 +15,7 @@ DATETIME_WIDGET = SplitDateTimeWidget(date_attrs={'type': 'date', 'class': 'my-2
 class MailingListView(PermissionRequiredMixin, ListView):
     model = Mailing
 
-    permission_required = 'mailings.view_mailing'
+    permission_required = 'mailings.mailings.view_mailing'
 
     extra_context = {
         'title': 'Рассылки',

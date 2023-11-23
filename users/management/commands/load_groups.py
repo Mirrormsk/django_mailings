@@ -15,14 +15,13 @@ class Command(BaseCommand):
         mailing_content_type = ContentType.objects.get_for_model(Mailing)
         users_content_type = ContentType.objects.get_for_model(User)
 
-        view_mailings, _ = Permission.objects.get_or_create(codename='mailings.view_mailing',
-                                                            name='Can view all mailings',
+        view_mailings, _ = Permission.objects.get_or_create(codename='view_mailing',
                                                             content_type=mailing_content_type)
-        stop_mailing, _ = Permission.objects.get_or_create(codename='mailings.stop_mailing', name='Can stop mailing',
+        stop_mailing, _ = Permission.objects.get_or_create(codename='stop_mailing', name='Can stop mailing',
                                                            content_type=mailing_content_type)
-        view_users, _ = Permission.objects.get_or_create(codename='users.view_users', name='Can view all users',
+        view_users, _ = Permission.objects.get_or_create(codename='view_user',
                                                          content_type=users_content_type)
-        block_users, _ = Permission.objects.get_or_create(codename='users.block_user', name='Can block user',
+        block_users, _ = Permission.objects.get_or_create(codename='block_user', name='Can block user',
                                                           content_type=users_content_type)
 
         managers_group.permissions.add(
@@ -33,8 +32,8 @@ class Command(BaseCommand):
         )
 
         if created:
-            message = 'Groups were successfully created.'
+            message = 'Groups were successfully created. Permissions was be added.'
         else:
-            message = 'Group already exists. Permissions was be updated'
+            message = 'Group already exists. Permissions was be updated.'
 
         self.stdout.write(self.style.SUCCESS(message))
