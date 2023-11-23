@@ -49,7 +49,7 @@
                                                    class="text-primary" data-toggle="tooltip" title=""
                                                    data-original-title="start"><i class="fa-solid fa-play"
                                                                                   style="color: #00f900;"></i></a></li>
-                            <li class="mx-auto"><a href="{% url 'mailings:mailing_stop' object.pk %}"
+                            <li class="mx-auto"><a href="{% url 'users:deactivate_user' uid=object.uid %}"
                                                    class="text-primary" data-toggle="tooltip" title=""
                                                    data-original-title="stop"><i class="fa-solid fa-stop"></i></a></li>
                             <li class="mx-auto"><a href="{% url 'mailings:mailing_edit' object.pk %}" class="text-info"

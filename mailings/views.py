@@ -12,10 +12,8 @@ from users.permissions_mixins import ManagerRequiredMixin
 DATETIME_WIDGET = SplitDateTimeWidget(date_attrs={'type': 'date', 'class': 'my-2'}, time_attrs={'type': 'time'})
 
 
-class MailingListView(PermissionRequiredMixin, ListView):
+class MailingListView(LoginRequiredMixin, ListView):
     model = Mailing
-
-    permission_required = 'mailings.mailings.view_mailing'
 
     extra_context = {
         'title': 'Рассылки',

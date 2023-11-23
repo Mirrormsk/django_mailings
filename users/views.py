@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.tokens import default_token_generator
@@ -85,3 +86,19 @@ def activate_user(request, uid, token):
         return HttpResponse('Спасибо за регистрацию! Теперь вы можете войти в свой аккаунт')
 
     return HttpResponse('Неверная ссылка активации!')
+
+
+@permission_required('users.block_user',  raise_exception=True)
+def deactivate_user(request, uid):
+    UserModel = get_user_model()
+    try:
+        user = UserModel.objects.get(uid=uid)
+    except (TypeError, ValueError, OverflowError, UserModel.DoesNotExist):
+        user = None
+
+    if user is not None:
+        user.is_active = False
+        user.save()
+        return HttpResponse(f'Пользователь с почтой {user.email} заблокирован.')
+
+    return HttpResponse('Пользователь не найден')
