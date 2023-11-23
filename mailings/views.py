@@ -58,7 +58,7 @@ class MailingCreateView(CreateView):
         return super().form_valid(form)
 
 
-class MailingUpdateView(UpdateView):
+class MailingUpdateView(UserPassesTestMixin, UpdateView):
     model = Mailing
     fields = ('name', 'period', 'audience', 'start_time', 'end_time', 'message_title', 'message_body')
     success_url = reverse_lazy('mailings:mailings_list')
@@ -68,6 +68,10 @@ class MailingUpdateView(UpdateView):
         form.fields['start_time'] = SplitDateTimeField(widget=DATETIME_WIDGET, label='Время начала')
         form.fields['end_time'] = SplitDateTimeField(widget=DATETIME_WIDGET, label='Время начала')
         return form
+
+    def test_func(self):
+        mailing = self.get_object()
+        return mailing.creator == self.request.user
 
 
 class ClientCreateView(LoginRequiredMixin, CreateView):
