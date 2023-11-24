@@ -1,19 +1,27 @@
-from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.forms import SplitDateTimeField
 from django.forms.widgets import SplitDateTimeWidget
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
 
-from users.models import User
 from .models import Mailing, Client, Periods, MailingLog, Audience
-from users.permissions_mixins import ManagerRequiredMixin
 
 DATETIME_WIDGET = SplitDateTimeWidget(date_attrs={'type': 'date', 'class': 'my-2'}, time_attrs={'type': 'time'})
 
 
+class IndexView(TemplateView):
+    template_name = 'mailings/portal/index.html'
+    extra_context = {
+        'nbar': 'home',
+    }
+
+
 class MailingListView(LoginRequiredMixin, ListView):
     model = Mailing
+
+    template_name = 'mailings/portal/orders.html'
+
 
     extra_context = {
         'title': 'Рассылки',
@@ -47,7 +55,6 @@ class MailingCreateView(CreateView):
         return form
 
     def form_valid(self, form):
-
         mailing = form.save(commit=False)
         user = self.request.user
         mailing.creator = user
