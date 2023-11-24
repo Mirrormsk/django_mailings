@@ -10,7 +10,7 @@ from .services import send_congratulatory_mail
 class ArticleListView(ListView):
     model = Article
 
-    extra_context = {"title": "SkyStore | Блог", "nbar": "blog"}
+    extra_context = {"title": "MyMailings | Блог", "nbar": "blog"}
 
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset(*args, **kwargs)
