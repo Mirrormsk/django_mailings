@@ -1,13 +1,13 @@
-{% extends 'mailings/mailings_base.html' %}
+{% extends 'mailings/portal/base.html' %}
 {% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
 
-{% block body %}
+{% block content %}
     <div class="col-12">
         <div class="row">
             <div class="col-6 mx-3 my-3">
-                <h4 class="my-5">Создать получателя</h4>
-                <form class="form-control" method="post" enctype="multipart/form-data">
+                <h4 class="my-5">Добавить получателя</h4>
+                <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form|crispy }}
                     {% if object %}

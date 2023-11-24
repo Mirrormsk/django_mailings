@@ -17,6 +17,7 @@ from users.forms import UserRegisterForm
 
 
 class LoginView(BaseLoginView):
+
     extra_context = {
         'title': 'Сервис рассылок - Вход'
     }
