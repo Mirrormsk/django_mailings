@@ -11,7 +11,7 @@ DATETIME_WIDGET = SplitDateTimeWidget(date_attrs={'type': 'date', 'class': 'my-2
 
 
 class IndexView(TemplateView):
-    template_name = 'mailings/portal/index.html'
+    template_name = 'mailings/index.html'
     extra_context = {
         'nbar': 'home',
     }
