@@ -10,11 +10,30 @@ from .models import Mailing, Client, Periods, MailingLog, Audience
 DATETIME_WIDGET = SplitDateTimeWidget(date_attrs={'type': 'date', 'class': 'my-2'}, time_attrs={'type': 'time'})
 
 
-class IndexView(TemplateView):
+class IndexView(LoginRequiredMixin, TemplateView):
     template_name = 'mailings/index.html'
     extra_context = {
         'nbar': 'home',
     }
+
+    def get_context_data(self, **kwargs):
+        user = self.request.user
+        context_data = super().get_context_data(**kwargs)
+
+        all_mailings = user.mailing_set
+        user_clients = user.client_set
+
+        total_mailings = all_mailings.count()
+        started_mailings = all_mailings.filter(status='started').count()
+        waiting_for_start = all_mailings.filter(status='created').count()
+        total_clients = user_clients.count()
+
+        context_data['total_mailings'] = total_mailings
+        context_data['started_mailings'] = started_mailings
+        context_data['waiting_for_start'] = waiting_for_start
+        context_data['total_clients'] = total_clients
+
+        return context_data
 
 
 class MailingListView(LoginRequiredMixin, ListView):
