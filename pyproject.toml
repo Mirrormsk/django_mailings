@@ -15,6 +15,7 @@ psycopg2-binary = "^2.9.9"
 ipython = "^8.17.1"
 django-crontab = "^0.7.1"
 pillow = "^10.1.0"
+pytils = "^0.4.1"
 
 
 [build-system]
