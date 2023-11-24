@@ -4,7 +4,9 @@ from django.forms.widgets import SplitDateTimeWidget
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
+import random
 
+from blog.models import Article
 from .models import Mailing, Client, Periods, MailingLog, Audience
 
 DATETIME_WIDGET = SplitDateTimeWidget(date_attrs={'type': 'date', 'class': 'my-2'}, time_attrs={'type': 'time'})
@@ -22,6 +24,7 @@ class IndexView(LoginRequiredMixin, TemplateView):
 
         all_mailings = user.mailing_set
         user_clients = user.client_set
+        random_articles = random.sample(list(Article.objects.filter(is_published=True)), 2)
 
         total_mailings = all_mailings.count()
         started_mailings = all_mailings.filter(status='started').count()
@@ -32,6 +35,7 @@ class IndexView(LoginRequiredMixin, TemplateView):
         context_data['started_mailings'] = started_mailings
         context_data['waiting_for_start'] = waiting_for_start
         context_data['total_clients'] = total_clients
+        context_data['random_articles'] = random_articles
 
         return context_data
 
