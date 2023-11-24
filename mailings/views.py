@@ -20,9 +20,6 @@ class IndexView(TemplateView):
 class MailingListView(LoginRequiredMixin, ListView):
     model = Mailing
 
-    template_name = 'mailings/portal/orders.html'
-
-
     extra_context = {
         'title': 'Рассылки',
         'nbar': 'mailings',
