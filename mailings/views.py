@@ -191,6 +191,11 @@ class AudienceListView(ListView):
     }
 
 
+class AudienceCreateView(CreateView):
+    model = Audience
+    fields = ('name', 'recipients')
+
+
 def stop_mailing(request, pk):
     mailing = Mailing.objects.get(pk=pk)
     mailing.status = Mailing.STATUS_FINISHED
@@ -203,3 +208,6 @@ def start_mailing(request, pk):
     mailing.status = Mailing.STATUS_CREATED
     mailing.save()
     return redirect(reverse_lazy('mailings:mailings_list'))
+
+
+

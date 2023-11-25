@@ -14,7 +14,7 @@
                 <p class="blog-post-meta">Просмотров: {{ object.views_count }}</p>
             </article>
 
-            <a href="{% url 'blog:blog_list' %}" class="btn btn-secondary">Назад к статьям</a>
+            <a href="{{request.META.HTTP_REFERER}}" class="btn btn-secondary">Назад к статьям</a>
         </div>
     </main>
 {% endblock %}
