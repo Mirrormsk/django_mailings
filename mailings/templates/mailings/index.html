@@ -78,7 +78,7 @@
                         <h4 class="notification-title mb-1">{{ article.title }}</h4>
 
                         <ul class="notification-meta list-inline mb-0">
-                            <li class="list-inline-item">2 hrs ago</li>
+                            <li class="list-inline-item">{{ article.created_at|timesince }} назад</li>
                             <li class="list-inline-item">|</li>
                             <li class="list-inline-item">{{ article.author.get_full_name }}</li>
                         </ul>
@@ -91,7 +91,7 @@
                 </div>
             </div><!--//app-card-body-->
             <div class="app-card-footer px-4 py-3">
-                <a class="action-link" href="#">View all
+                <a class="action-link" href="{% url 'blog:article_detail' article.pk %}">Подробнее
                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-right ms-2" fill="currentColor"
                          xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd"

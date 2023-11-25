@@ -104,6 +104,11 @@ class ClientCreateView(LoginRequiredMixin, CreateView):
     fields = ('first_name', 'last_name', 'email', 'note')
     success_url = reverse_lazy('mailings:mailings_list')
 
+    extra_context = {
+        'title': 'Добавить получателя',
+        'nbar': 'clients'
+    }
+
     def form_valid(self, form):
         user = self.request.user
         self.object = form.save()
@@ -119,6 +124,16 @@ class ClientListView(ListView):
         'title': 'Клиенты',
         'nbar': 'clients'
     }
+
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset()
+        user = self.request.user
+
+        if not (user.has_perm('mailings.view_all_mailings') or user.is_superuser):
+            queryset = queryset.filter(creator=user)
+
+        return queryset
+
 
 
 class PeriodsCreateView(CreateView):
