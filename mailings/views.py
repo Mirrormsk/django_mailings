@@ -8,6 +8,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
 
 from blog.models import Article
+from .forms import AudienceForm
 from .models import Mailing, Client, Periods, MailingLog, Audience
 
 DATETIME_WIDGET = SplitDateTimeWidget(date_attrs={'type': 'date', 'class': 'my-2'}, time_attrs={'type': 'time'})
@@ -103,7 +104,7 @@ class MailingUpdateView(UserPassesTestMixin, UpdateView):
 class ClientCreateView(LoginRequiredMixin, CreateView):
     model = Client
     fields = ('first_name', 'last_name', 'email', 'note')
-    success_url = reverse_lazy('mailings:mailings_list')
+    success_url = reverse_lazy('mailings:client_list')
 
     extra_context = {
         'title': 'Добавить получателя',
@@ -112,9 +113,9 @@ class ClientCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         user = self.request.user
-        self.object = form.save()
-        self.object.creator = user
-        self.object.save()
+        client = form.save(commit=False)
+        client.creator = user
+        client.save()
         return super().form_valid(form)
 
 
@@ -190,10 +191,27 @@ class AudienceListView(ListView):
         'nbar': 'audiences',
     }
 
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset()
+        user = self.request.user
 
-class AudienceCreateView(CreateView):
+        if not (user.has_perm('mailings.view_all_mailings') or user.is_superuser):
+            queryset = queryset.filter(creator=user)
+
+        return queryset
+
+
+class AudienceCreateView(LoginRequiredMixin, CreateView):
     model = Audience
-    fields = ('name', 'recipients')
+    form_class = AudienceForm
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+
+
 
 
 def stop_mailing(request, pk):
@@ -208,6 +226,3 @@ def start_mailing(request, pk):
     mailing.status = Mailing.STATUS_CREATED
     mailing.save()
     return redirect(reverse_lazy('mailings:mailings_list'))
-
-
-

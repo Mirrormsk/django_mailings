@@ -25,6 +25,4 @@ urlpatterns = [
     path('mailings/periods/', views.PeriodsListView.as_view(), name='periods_list'),
 
     path('mailing_logs/', views.MailingLogListView.as_view(), name='mailing_log_list'),
-
-
 ]
