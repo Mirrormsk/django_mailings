@@ -69,6 +69,10 @@ class MailingCreateView(CreateView):
     model = Mailing
     fields = ('name', 'period', 'audience', 'start_time', 'end_time', 'message_title', 'message_body')
     success_url = reverse_lazy('mailings:mailings_list')
+    extra_context = {
+        'title': 'Создать рассылку',
+        'nbar': 'mailings',
+    }
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -89,6 +93,11 @@ class MailingUpdateView(UserPassesTestMixin, UpdateView):
     model = Mailing
     fields = ('name', 'period', 'audience', 'start_time', 'end_time', 'message_title', 'message_body')
     success_url = reverse_lazy('mailings:mailings_list')
+
+    extra_context = {
+        'title': 'Редактировать рассылку',
+        'nbar': 'mailings',
+    }
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
