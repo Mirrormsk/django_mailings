@@ -163,7 +163,7 @@ class MailingLogListView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context_data = super().get_context_data(**kwargs)
 
-        context_data['mailings'] = Mailing.objects.all()
+        context_data['mailings'] = Mailing.objects.filter(creator=self.request.user)
         context_data['title'] = 'Логи'
         context_data['nbar'] = 'logs'
         context_data['selected_mailing_pk'] = int(self.request.POST.get('mailing', 0))
@@ -176,8 +176,8 @@ class MailingLogListView(ListView):
         mailing_pk_list = list(Mailing.objects.values_list('pk', flat=True))
 
         if int(mailing_pk) in mailing_pk_list:
-            return self.model.objects.filter(mailing_id=mailing_pk)
-        return self.model.objects.all()
+            return self.model.objects.filter(mailing_id=mailing_pk, mailing__creator=self.request.user)
+        return self.model.objects.filter(mailing__creator=self.request.user)
 
     def post(self, request):
         return self.get(request)
