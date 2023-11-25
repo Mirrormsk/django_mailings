@@ -103,6 +103,7 @@ class MailingUpdateView(UserPassesTestMixin, UpdateView):
         form = super().get_form(form_class)
         form.fields['start_time'] = SplitDateTimeField(widget=DATETIME_WIDGET, label='Время начала')
         form.fields['end_time'] = SplitDateTimeField(widget=DATETIME_WIDGET, label='Время начала')
+        form.fields['audience'].queryset = Audience.objects.filter(creator=self.request.user)
         return form
 
     def test_func(self):
