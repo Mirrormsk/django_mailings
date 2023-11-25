@@ -1,10 +1,11 @@
+import random
+
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.forms import SplitDateTimeField
 from django.forms.widgets import SplitDateTimeWidget
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
-import random
 
 from blog.models import Article
 from .models import Mailing, Client, Periods, MailingLog, Audience
@@ -135,11 +136,15 @@ class ClientListView(ListView):
         return queryset
 
 
-
 class PeriodsCreateView(CreateView):
     model = Periods
     fields = ('name', 'duration')
     success_url = reverse_lazy('mailings:periods_list')
+
+    extra_context = {
+        'title': 'Добавить период',
+        'nbar': 'periods',
+    }
 
 
 class PeriodsListView(ListView):
