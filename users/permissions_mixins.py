@@ -11,7 +11,7 @@ class GroupRequiredMixin(UserPassesTestMixin, ABC):
         pass
 
     def test_func(self):
-        if bool(self.request.user.groups.filter(name=self.group_name)) | self.request.user.is_superuser:
+        if self.request.user.groups.filter(name=self.group_name).exists() | self.request.user.is_superuser:
             return True
         return False
 
