@@ -62,15 +62,31 @@ class Command(BaseCommand):
             codename="delete_article", content_type=article_content_type
         )
 
-        add_client, _ = Permission.objects.get_or_create(codename="add_client", content_type=client_content_type)
-        view_client, _ = Permission.objects.get_or_create(codename="view_client", content_type=client_content_type)
-        change_client, _ = Permission.objects.get_or_create(codename="change_client", content_type=client_content_type)
-        delete_client, _ = Permission.objects.get_or_create(codename="delete_client", content_type=client_content_type)
+        add_client, _ = Permission.objects.get_or_create(
+            codename="add_client", content_type=client_content_type
+        )
+        view_client, _ = Permission.objects.get_or_create(
+            codename="view_client", content_type=client_content_type
+        )
+        change_client, _ = Permission.objects.get_or_create(
+            codename="change_client", content_type=client_content_type
+        )
+        delete_client, _ = Permission.objects.get_or_create(
+            codename="delete_client", content_type=client_content_type
+        )
 
-        add_audience, _ = Permission.objects.get_or_create(codename="add_audience", content_type=audience_content_type)
-        view_audience, _ = Permission.objects.get_or_create(codename="view_audience", content_type=audience_content_type)
-        change_audience, _ = Permission.objects.get_or_create(codename="change_audience", content_type=audience_content_type)
-        delete_audience, _ = Permission.objects.get_or_create(codename="delete_audience", content_type=audience_content_type)
+        add_audience, _ = Permission.objects.get_or_create(
+            codename="add_audience", content_type=audience_content_type
+        )
+        view_audience, _ = Permission.objects.get_or_create(
+            codename="view_audience", content_type=audience_content_type
+        )
+        change_audience, _ = Permission.objects.get_or_create(
+            codename="change_audience", content_type=audience_content_type
+        )
+        delete_audience, _ = Permission.objects.get_or_create(
+            codename="delete_audience", content_type=audience_content_type
+        )
 
         managers_group.permissions.add(
             view_mailings,
@@ -91,12 +107,10 @@ class Command(BaseCommand):
             delete_mailing,
             view_mailings,
             stop_mailing,
-
             add_client,
             view_client,
             change_client,
             delete_client,
-
             add_audience,
             view_audience,
             change_audience,

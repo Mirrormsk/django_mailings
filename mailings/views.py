@@ -1,7 +1,11 @@
 import random
 
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import (
+    UserPassesTestMixin,
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+)
 from django.forms import SplitDateTimeField
 from django.forms.widgets import SplitDateTimeWidget
 from django.shortcuts import redirect
@@ -76,8 +80,9 @@ class MailingDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("mailings:mailings_list")
 
 
-class MailingCreateView(LoginRequiredMixin, CreateView):
+class MailingCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Mailing
+    permission_required = "mailings.add_mailing"
     fields = (
         "name",
         "period",
@@ -115,8 +120,11 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class MailingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class MailingUpdateView(
+    LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin, UpdateView
+):
     model = Mailing
+    permission_required = "mailings.change_mailing"
     fields = (
         "name",
         "period",
@@ -151,8 +159,9 @@ class MailingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return mailing.creator == self.request.user or self.request.user.is_superuser
 
 
-class ClientCreateView(LoginRequiredMixin, CreateView):
+class ClientCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Client
+    permission_required = "mailings.add_client"
     fields = ("first_name", "last_name", "email", "note")
     success_url = reverse_lazy("mailings:client_list")
 
@@ -166,8 +175,9 @@ class ClientCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ClientListView(LoginRequiredMixin, ListView):
+class ClientListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Client
+    permission_required = "mailings.view_client"
 
     extra_context = {"title": "Клиенты", "nbar": "clients"}
 
@@ -229,9 +239,9 @@ class MailingLogListView(LoginRequiredMixin, ListView):
         return self.get(request)
 
 
-class AudienceListView(LoginRequiredMixin, ListView):
+class AudienceListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Audience
-
+    permission_required = "mailings.view_audience"
     extra_context = {
         "title": "Аудитории",
         "nbar": "audiences",
@@ -247,8 +257,9 @@ class AudienceListView(LoginRequiredMixin, ListView):
         return queryset
 
 
-class AudienceCreateView(LoginRequiredMixin, CreateView):
+class AudienceCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Audience
+    permission_required = "mailings.add_audience"
     form_class = AudienceForm
     success_url = reverse_lazy("mailings:audiences_list")
 
@@ -266,6 +277,7 @@ class AudienceCreateView(LoginRequiredMixin, CreateView):
 
 
 @login_required
+@permission_required('mailing.stop_mailing')
 def stop_mailing(request, pk):
     mailing = Mailing.objects.get(pk=pk)
     mailing.status = Mailing.STATUS_FINISHED
@@ -274,6 +286,7 @@ def stop_mailing(request, pk):
 
 
 @login_required
+@permission_required('mailing.change_mailing')
 def start_mailing(request, pk):
     mailing = Mailing.objects.get(pk=pk)
     mailing.status = Mailing.STATUS_CREATED
