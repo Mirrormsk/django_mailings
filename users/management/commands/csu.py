@@ -19,7 +19,7 @@ class Command(BaseCommand):
         user = User.objects.create(
             email=email,
             first_name="Admin",
-            last_name="Skystore",
+            last_name="MyMailings",
             is_staff=True,
             is_superuser=True,
         )
