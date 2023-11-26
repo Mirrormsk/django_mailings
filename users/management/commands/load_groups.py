@@ -3,7 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.management.base import BaseCommand
 
 from blog.models import Article
-from mailings.models import Mailing, Client, Audience
+from mailings.models import Mailing, Client, Audience, MailingLog
 from users.models import User
 
 
@@ -21,6 +21,7 @@ class Command(BaseCommand):
         )
 
         mailing_content_type = ContentType.objects.get_for_model(Mailing)
+        mailing_log_content_type = ContentType.objects.get_for_model(MailingLog)
         users_content_type = ContentType.objects.get_for_model(User)
         article_content_type = ContentType.objects.get_for_model(Article)
         client_content_type = ContentType.objects.get_for_model(Client)
@@ -88,11 +89,16 @@ class Command(BaseCommand):
             codename="delete_audience", content_type=audience_content_type
         )
 
+        view_mailing_log, _ = Permission.objects.get_or_create(
+            codename="view_mailinglog", content_type=mailing_log_content_type
+        )
+
         managers_group.permissions.add(
             view_mailings,
             view_users,
             block_users,
             stop_mailing,
+            view_mailing_log,
         )
 
         content_managers_group.permissions.add(
@@ -115,6 +121,7 @@ class Command(BaseCommand):
             view_audience,
             change_audience,
             delete_audience,
+            view_mailing_log,
         )
 
         if managers_created:
