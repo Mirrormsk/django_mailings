@@ -136,8 +136,9 @@
                 </div><!--//app-card-body-->
             </div><!--//app-card-->
 
+            {% if perms.mailings.add_mailing %}
             <a href="{% url 'mailings:mailing_create' %}" class="btn btn-success">Добавить рассылку</a>
-
+            {% endif %}
 
             <nav class="app-pagination">
                 <ul class="pagination justify-content-center">
