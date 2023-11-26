@@ -3,7 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.management.base import BaseCommand
 
 from blog.models import Article
-from mailings.models import Mailing
+from mailings.models import Mailing, Client, Audience
 from users.models import User
 
 
@@ -23,6 +23,8 @@ class Command(BaseCommand):
         mailing_content_type = ContentType.objects.get_for_model(Mailing)
         users_content_type = ContentType.objects.get_for_model(User)
         article_content_type = ContentType.objects.get_for_model(Article)
+        client_content_type = ContentType.objects.get_for_model(Client)
+        audience_content_type = ContentType.objects.get_for_model(Audience)
 
         view_mailings, _ = Permission.objects.get_or_create(
             codename="view_mailing", content_type=mailing_content_type
@@ -60,8 +62,21 @@ class Command(BaseCommand):
             codename="delete_article", content_type=article_content_type
         )
 
+        add_client, _ = Permission.objects.get_or_create(codename="add_client", content_type=client_content_type)
+        view_client, _ = Permission.objects.get_or_create(codename="view_client", content_type=client_content_type)
+        change_client, _ = Permission.objects.get_or_create(codename="change_client", content_type=client_content_type)
+        delete_client, _ = Permission.objects.get_or_create(codename="delete_client", content_type=client_content_type)
+
+        add_audience, _ = Permission.objects.get_or_create(codename="add_audience", content_type=audience_content_type)
+        view_audience, _ = Permission.objects.get_or_create(codename="view_audience", content_type=audience_content_type)
+        change_audience, _ = Permission.objects.get_or_create(codename="change_audience", content_type=audience_content_type)
+        delete_audience, _ = Permission.objects.get_or_create(codename="delete_audience", content_type=audience_content_type)
+
         managers_group.permissions.add(
-            view_mailings, view_users, block_users, stop_mailing
+            view_mailings,
+            view_users,
+            block_users,
+            stop_mailing,
         )
 
         content_managers_group.permissions.add(
@@ -76,6 +91,16 @@ class Command(BaseCommand):
             delete_mailing,
             view_mailings,
             stop_mailing,
+
+            add_client,
+            view_client,
+            change_client,
+            delete_client,
+
+            add_audience,
+            view_audience,
+            change_audience,
+            delete_audience,
         )
 
         if managers_created:
