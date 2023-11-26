@@ -85,6 +85,10 @@ def deactivate_user(request, uid):
         user = None
 
     if user is not None:
+
+        if user.is_superuser:
+            return HttpResponse(f"Нельзя заблокировать суперпользователя")
+
         user.is_active = False
         user.save()
         return HttpResponse(f"Пользователь с почтой {user.email} заблокирован.")
