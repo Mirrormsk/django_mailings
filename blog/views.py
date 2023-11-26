@@ -7,7 +7,7 @@ from .models import Article
 from .services import send_congratulatory_mail
 
 
-class ArticleListView(ListView):
+class ArticleListView(LoginRequiredMixin, ListView):
     model = Article
 
     extra_context = {"title": "Новости", "nbar": "blog"}
@@ -55,7 +55,7 @@ class ArticleUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
         return super().form_valid(form)
 
 
-class ArticleDetailView(DetailView):
+class ArticleDetailView(LoginRequiredMixin, DetailView):
     model = Article
 
     def get_context_data(self, **kwargs):
