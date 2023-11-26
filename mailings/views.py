@@ -1,5 +1,6 @@
 import random
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.forms import SplitDateTimeField
 from django.forms.widgets import SplitDateTimeWidget
@@ -70,12 +71,12 @@ class MailingListView(LoginRequiredMixin, ListView):
         return queryset
 
 
-class MailingDeleteView(DeleteView):
+class MailingDeleteView(LoginRequiredMixin, DeleteView):
     model = Mailing
     success_url = reverse_lazy("mailings:mailings_list")
 
 
-class MailingCreateView(CreateView):
+class MailingCreateView(LoginRequiredMixin, CreateView):
     model = Mailing
     fields = (
         "name",
@@ -114,7 +115,7 @@ class MailingCreateView(CreateView):
         return super().form_valid(form)
 
 
-class MailingUpdateView(UserPassesTestMixin, UpdateView):
+class MailingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Mailing
     fields = (
         "name",
@@ -165,7 +166,7 @@ class ClientCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ClientListView(ListView):
+class ClientListView(LoginRequiredMixin, ListView):
     model = Client
 
     extra_context = {"title": "Клиенты", "nbar": "clients"}
@@ -180,7 +181,7 @@ class ClientListView(ListView):
         return queryset
 
 
-class PeriodsCreateView(CreateView):
+class PeriodsCreateView(LoginRequiredMixin, CreateView):
     model = Periods
     fields = ("name", "duration")
     success_url = reverse_lazy("mailings:periods_list")
@@ -191,7 +192,7 @@ class PeriodsCreateView(CreateView):
     }
 
 
-class PeriodsListView(ListView):
+class PeriodsListView(LoginRequiredMixin, ListView):
     model = Periods
 
     extra_context = {
@@ -200,7 +201,7 @@ class PeriodsListView(ListView):
     }
 
 
-class MailingLogListView(ListView):
+class MailingLogListView(LoginRequiredMixin, ListView):
     model = MailingLog
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -228,7 +229,7 @@ class MailingLogListView(ListView):
         return self.get(request)
 
 
-class AudienceListView(ListView):
+class AudienceListView(LoginRequiredMixin, ListView):
     model = Audience
 
     extra_context = {
@@ -264,6 +265,7 @@ class AudienceCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+@login_required
 def stop_mailing(request, pk):
     mailing = Mailing.objects.get(pk=pk)
     mailing.status = Mailing.STATUS_FINISHED
@@ -271,6 +273,7 @@ def stop_mailing(request, pk):
     return redirect(reverse_lazy("mailings:mailings_list"))
 
 
+@login_required
 def start_mailing(request, pk):
     mailing = Mailing.objects.get(pk=pk)
     mailing.status = Mailing.STATUS_CREATED
