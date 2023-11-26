@@ -75,8 +75,9 @@ class MailingListView(LoginRequiredMixin, ListView):
         return queryset
 
 
-class MailingDeleteView(LoginRequiredMixin, DeleteView):
+class MailingDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Mailing
+    permission_required = 'mailings.delete_mailing'
     success_url = reverse_lazy("mailings:mailings_list")
 
 
