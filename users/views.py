@@ -1,11 +1,11 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import LoginView as BaseLoginView
 from django.contrib.auth.views import LogoutView as BaseLogoutView
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseServerError
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView
 
@@ -29,7 +29,23 @@ class RegisterView(CreateView):
     template_name = "users/register.html"
 
     def form_valid(self, form):
-        send_verify_mail(form, self.request)
+        try:
+            service_users_group = Group.objects.get(name="Service users")
+        except Group.DoesNotExist:
+            # Верните ошибку 500, если группа не найдена
+            return HttpResponseServerError(
+                "Internal Server Error: 'Service users' group not found."
+            )
+
+        user = form.save(commit=False)
+        user.is_active = False
+        user.save()
+
+        user.groups.add(service_users_group)
+        user.save()
+
+        send_verify_mail(user, self.request)
+
         return HttpResponse("Ссылка для подтверждения отправлена на ваш email.")
 
 

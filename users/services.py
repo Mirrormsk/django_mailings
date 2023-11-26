@@ -6,14 +6,12 @@ from django.template.loader import render_to_string
 from users import texts
 
 
-def send_verify_mail(form, request):
-    user = form.save(commit=False)
-    user.is_active = False
-    user.save()
+def send_verify_mail(user, request):
+
     current_site = get_current_site(request)
     mail_subject = texts.register_mail_subject.format(current_site)
     token = default_token_generator.make_token(user)
-    to_email = form.cleaned_data.get("email")
+    to_email = user.email
 
     message = render_to_string(
         "users/email_templates/confirm_email_message.html",
