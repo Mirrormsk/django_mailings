@@ -14,7 +14,6 @@ from users.services import send_verify_mail
 
 
 class LoginView(BaseLoginView):
-
     extra_context = {"title": "Сервис рассылок - Вход"}
 
 
