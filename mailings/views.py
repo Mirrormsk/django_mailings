@@ -77,6 +77,19 @@ class MailingListView(LoginRequiredMixin, ListView):
 
         return queryset
 
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(*args, **kwargs)
+        all_mailings = self.get_queryset()
+
+        started_mailings = all_mailings.filter(status='started')
+        created_mailings = all_mailings.filter(status='created')
+        finished_mailings = all_mailings.filter(status='finished')
+
+        context_data['created_mailings'] = created_mailings
+        context_data['started_mailings'] = started_mailings
+        context_data['finished_mailings'] = finished_mailings
+        return context_data
+
 
 class MailingDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Mailing
