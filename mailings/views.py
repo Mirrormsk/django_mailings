@@ -18,6 +18,7 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
     TemplateView,
+    DetailView,
 )
 
 from blog.models import Article
@@ -196,6 +197,19 @@ class MailingUpdateView(
         return mailing.creator == self.request.user or self.request.user.is_superuser
 
 
+class MailingDetailView(DetailView):
+    model = Mailing
+
+    extra_context = {
+        "nbar": "mailings",
+    }
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data["title"] = f"Рассылка {self.object.name}"
+        return context_data
+
+
 class ClientCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Client
     permission_required = "mailings.add_client"
@@ -212,7 +226,9 @@ class ClientCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ClientUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin, UpdateView):
+class ClientUpdateView(
+    LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin, UpdateView
+):
     model = Client
     permission_required = "mailings.change_client"
     fields = ("first_name", "last_name", "email", "note")
