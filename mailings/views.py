@@ -7,11 +7,11 @@ from django.contrib.auth.mixins import (
     LoginRequiredMixin,
     PermissionRequiredMixin,
 )
+from django.core.cache import cache
 from django.forms import SplitDateTimeField
 from django.forms.widgets import SplitDateTimeWidget
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.core.cache import cache
 from django.views.generic import (
     ListView,
     CreateView,
@@ -210,6 +210,30 @@ class ClientCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         client.creator = user
         client.save()
         return super().form_valid(form)
+
+
+class ClientUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = Client
+    permission_required = "mailings.change_client"
+    fields = ("first_name", "last_name", "email", "note")
+    success_url = reverse_lazy("mailings:client_list")
+    extra_context = {"title": "Изменить данные получателя", "nbar": "clients"}
+
+
+class ClientDeleteView(
+    LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin, DeleteView
+):
+    model = Client
+    permission_required = "mailings.delete_client"
+    success_url = reverse_lazy("mailings:client_list")
+    extra_context = {
+        'title': 'Удаление клиента',
+        'nbar': 'clients',
+    }
+
+    def test_func(self):
+        client = self.get_object()
+        return client.creator == self.request.user or self.request.user.is_superuser
 
 
 class ClientListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
