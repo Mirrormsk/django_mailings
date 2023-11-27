@@ -306,8 +306,6 @@ class MailingLogListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
         else:
             all_objects = self.model.objects.filter(mailing__creator=user)
             mailing_pk_list = list(user.mailing_set.values_list("pk", flat=True))
-        print(mailing_pk)
-        print(mailing_pk_list)
         if int(mailing_pk) in mailing_pk_list:
             return all_objects.filter(mailing_id=mailing_pk)
         return all_objects
