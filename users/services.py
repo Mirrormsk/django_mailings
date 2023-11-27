@@ -28,3 +28,7 @@ def send_verify_mail(user, request):
 
     activation_email.content_subtype = "html"
     activation_email.send()
+
+
+def manager_or_superuser(user):
+    return user.groups.filter(name='Managers').exists() or user.is_superuser

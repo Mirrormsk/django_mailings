@@ -19,6 +19,7 @@ from django.views.generic import (
 )
 
 from blog.models import Article
+from users.services import manager_or_superuser
 from .forms import AudienceForm
 from .models import Mailing, Client, Periods, MailingLog, Audience
 
@@ -72,7 +73,7 @@ class MailingListView(LoginRequiredMixin, ListView):
         queryset = super().get_queryset()
         user = self.request.user
 
-        if not (user.has_perm("mailings.view_all_mailings") or user.is_superuser):
+        if not manager_or_superuser(user):
             queryset = queryset.filter(creator=user)
 
         return queryset
@@ -81,13 +82,13 @@ class MailingListView(LoginRequiredMixin, ListView):
         context_data = super().get_context_data(*args, **kwargs)
         all_mailings = self.get_queryset()
 
-        started_mailings = all_mailings.filter(status='started')
-        created_mailings = all_mailings.filter(status='created')
-        finished_mailings = all_mailings.filter(status='finished')
+        started_mailings = all_mailings.filter(status="started")
+        created_mailings = all_mailings.filter(status="created")
+        finished_mailings = all_mailings.filter(status="finished")
 
-        context_data['created_mailings'] = created_mailings
-        context_data['started_mailings'] = started_mailings
-        context_data['finished_mailings'] = finished_mailings
+        context_data["created_mailings"] = created_mailings
+        context_data["started_mailings"] = started_mailings
+        context_data["finished_mailings"] = finished_mailings
         return context_data
 
 
@@ -202,7 +203,7 @@ class ClientListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
         queryset = super().get_queryset()
         user = self.request.user
 
-        if not (user.has_perm("mailings.view_all_mailings") or user.is_superuser):
+        if not manager_or_superuser(user):
             queryset = queryset.filter(creator=user)
 
         return queryset
@@ -228,13 +229,19 @@ class PeriodsListView(LoginRequiredMixin, ListView):
     }
 
 
-class MailingLogListView(LoginRequiredMixin, ListView):
+class MailingLogListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = MailingLog
+    permission_required = "mailings.view_mailinglog"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context_data = super().get_context_data(**kwargs)
 
-        context_data["mailings"] = Mailing.objects.filter(creator=self.request.user)
+        user = self.request.user
+        if manager_or_superuser(user):
+            context_data["mailings"] = Mailing.objects.all()
+        else:
+            context_data["mailings"] = Mailing.objects.filter(creator=user)
+
         context_data["title"] = "Логи"
         context_data["nbar"] = "logs"
         context_data["selected_mailing_pk"] = int(self.request.POST.get("mailing", 0))
@@ -244,13 +251,19 @@ class MailingLogListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         mailing_pk = self.request.POST.get("mailing", 0)
 
-        mailing_pk_list = list(Mailing.objects.values_list("pk", flat=True))
+        user = self.request.user
 
+        if manager_or_superuser(user):
+            all_objects = self.model.objects.all()
+            mailing_pk_list = list(Mailing.objects.values_list("pk", flat=True))
+        else:
+            all_objects = self.model.objects.filter(mailing__creator=user)
+            mailing_pk_list = list(user.mailing_set.values_list("pk", flat=True))
+        print(mailing_pk)
+        print(mailing_pk_list)
         if int(mailing_pk) in mailing_pk_list:
-            return self.model.objects.filter(
-                mailing_id=mailing_pk, mailing__creator=self.request.user
-            )
-        return self.model.objects.filter(mailing__creator=self.request.user)
+            return all_objects.filter(mailing_id=mailing_pk)
+        return all_objects
 
     def post(self, request):
         return self.get(request)
