@@ -44,6 +44,11 @@ class Command(BaseCommand):
             name="Can stop mailing",
             content_type=mailing_content_type,
         )
+        start_mailing, _ = Permission.objects.get_or_create(
+            codename="start_mailing",
+            name="Can start mailing",
+            content_type=mailing_content_type,
+        )
 
         view_users, _ = Permission.objects.get_or_create(
             codename="view_user", content_type=users_content_type
@@ -98,6 +103,7 @@ class Command(BaseCommand):
             view_users,
             block_users,
             stop_mailing,
+            start_mailing,
             view_mailing_log,
         )
 
@@ -113,6 +119,7 @@ class Command(BaseCommand):
             delete_mailing,
             view_mailings,
             stop_mailing,
+            start_mailing,
             add_client,
             view_client,
             change_client,

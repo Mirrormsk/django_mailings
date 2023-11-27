@@ -316,7 +316,7 @@ def stop_mailing(request, pk):
 
 
 @login_required
-@permission_required("mailing.change_mailing")
+@permission_required("mailings.start_mailing")
 def start_mailing(request, pk):
     mailing = Mailing.objects.get(pk=pk)
     mailing.status = Mailing.STATUS_CREATED

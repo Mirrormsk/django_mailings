@@ -79,17 +79,27 @@
                                                                    class="text-primary" data-toggle="tooltip" title=""
                                                                    data-original-title="stop"><i
                                                     class="fa-solid fa-stop"></i></a></li>
-                                            <li class="mx-auto"><a href="{% url 'mailings:mailing_edit' object.pk %}"
-                                                                   class="text-info"
-                                                                   data-toggle="tooltip" title="edit"
-                                                                   data-original-title="Edit"><i
-                                                    class="fas fa-pencil-alt"></i></a></li>
-                                            <li class="mx-auto"><a href="{% url 'mailings:mailing_delete' object.pk %}"
-                                                                   class="text-danger" data-toggle="tooltip" title=""
-                                                                   data-original-title="Delete"><i
-                                                    class="fa-solid fa-trash"
-                                                    style="color: #ff4013;"></i></a>
-                                            </li>
+
+                                            {% if perms.mailings.change_mailing %}
+                                                <li class="mx-auto"><a
+                                                        href="{% url 'mailings:mailing_edit' object.pk %}"
+                                                        class="text-info"
+                                                        data-toggle="tooltip" title="edit"
+                                                        data-original-title="Edit"><i
+                                                        class="fas fa-pencil-alt"></i></a></li>
+                                            {% endif %}
+
+
+                                            {% if perms.mailings.delete_mailing %}
+                                                <li class="mx-auto"><a
+                                                        href="{% url 'mailings:mailing_delete' object.pk %}"
+                                                        class="text-danger" data-toggle="tooltip" title=""
+                                                        data-original-title="Delete"><i
+                                                        class="fa-solid fa-trash"
+                                                        style="color: #ff4013;"></i></a>
+                                                </li>
+                                            {% endif %}
+
                                         </ul>
                                     </td>
                                     {#                                    <td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a></td>#}
@@ -170,17 +180,27 @@
                                                                    class="text-primary" data-toggle="tooltip" title=""
                                                                    data-original-title="stop"><i
                                                     class="fa-solid fa-stop"></i></a></li>
-                                            <li class="mx-auto"><a href="{% url 'mailings:mailing_edit' object.pk %}"
-                                                                   class="text-info"
-                                                                   data-toggle="tooltip" title="edit"
-                                                                   data-original-title="Edit"><i
-                                                    class="fas fa-pencil-alt"></i></a></li>
-                                            <li class="mx-auto"><a href="{% url 'mailings:mailing_delete' object.pk %}"
-                                                                   class="text-danger" data-toggle="tooltip" title=""
-                                                                   data-original-title="Delete"><i
-                                                    class="fa-solid fa-trash"
-                                                    style="color: #ff4013;"></i></a>
-                                            </li>
+
+
+                                            {% if perms.mailings.change_mailing %}
+                                                <li class="mx-auto"><a
+                                                        href="{% url 'mailings:mailing_edit' object.pk %}"
+                                                        class="text-info"
+                                                        data-toggle="tooltip" title="edit"
+                                                        data-original-title="Edit"><i
+                                                        class="fas fa-pencil-alt"></i></a></li>
+                                            {% endif %}
+
+
+                                            {% if perms.mailings.delete_mailing %}
+                                                <li class="mx-auto"><a
+                                                        href="{% url 'mailings:mailing_delete' object.pk %}"
+                                                        class="text-danger" data-toggle="tooltip" title=""
+                                                        data-original-title="Delete"><i
+                                                        class="fa-solid fa-trash"
+                                                        style="color: #ff4013;"></i></a>
+                                                </li>
+                                            {% endif %}
                                         </ul>
                                     </td>
                                     {#                                    <td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a></td>#}
@@ -192,6 +212,7 @@
                 </div><!--//app-card-body-->
             </div><!--//app-card-->
         </div><!--//tab-pane-->
+
         {# Created mailings tab #}
         <div class="tab-pane fade" id="mailings-created" role="tabpanel" aria-labelledby="orders-pending-tab">
             <div class="app-card app-card-orders-table mb-5">
@@ -239,17 +260,27 @@
                                                                    class="text-primary" data-toggle="tooltip" title=""
                                                                    data-original-title="stop"><i
                                                     class="fa-solid fa-stop"></i></a></li>
-                                            <li class="mx-auto"><a href="{% url 'mailings:mailing_edit' object.pk %}"
-                                                                   class="text-info"
-                                                                   data-toggle="tooltip" title="edit"
-                                                                   data-original-title="Edit"><i
-                                                    class="fas fa-pencil-alt"></i></a></li>
-                                            <li class="mx-auto"><a href="{% url 'mailings:mailing_delete' object.pk %}"
-                                                                   class="text-danger" data-toggle="tooltip" title=""
-                                                                   data-original-title="Delete"><i
-                                                    class="fa-solid fa-trash"
-                                                    style="color: #ff4013;"></i></a>
-                                            </li>
+
+
+                                            {% if perms.mailings.change_mailing %}
+                                                <li class="mx-auto"><a
+                                                        href="{% url 'mailings:mailing_edit' object.pk %}"
+                                                        class="text-info"
+                                                        data-toggle="tooltip" title="edit"
+                                                        data-original-title="Edit"><i
+                                                        class="fas fa-pencil-alt"></i></a></li>
+                                            {% endif %}
+
+
+                                            {% if perms.mailings.delete_mailing %}
+                                                <li class="mx-auto"><a
+                                                        href="{% url 'mailings:mailing_delete' object.pk %}"
+                                                        class="text-danger" data-toggle="tooltip" title=""
+                                                        data-original-title="Delete"><i
+                                                        class="fa-solid fa-trash"
+                                                        style="color: #ff4013;"></i></a>
+                                                </li>
+                                            {% endif %}
                                         </ul>
                                     </td>
                                     {#                                    <td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a></td>#}
@@ -310,17 +341,27 @@
                                                                    class="text-primary" data-toggle="tooltip" title=""
                                                                    data-original-title="stop"><i
                                                     class="fa-solid fa-stop"></i></a></li>
-                                            <li class="mx-auto"><a href="{% url 'mailings:mailing_edit' object.pk %}"
-                                                                   class="text-info"
-                                                                   data-toggle="tooltip" title="edit"
-                                                                   data-original-title="Edit"><i
-                                                    class="fas fa-pencil-alt"></i></a></li>
-                                            <li class="mx-auto"><a href="{% url 'mailings:mailing_delete' object.pk %}"
-                                                                   class="text-danger" data-toggle="tooltip" title=""
-                                                                   data-original-title="Delete"><i
-                                                    class="fa-solid fa-trash"
-                                                    style="color: #ff4013;"></i></a>
-                                            </li>
+
+
+                                            {% if perms.mailings.change_mailing %}
+                                                <li class="mx-auto"><a
+                                                        href="{% url 'mailings:mailing_edit' object.pk %}"
+                                                        class="text-info"
+                                                        data-toggle="tooltip" title="edit"
+                                                        data-original-title="Edit"><i
+                                                        class="fas fa-pencil-alt"></i></a></li>
+                                            {% endif %}
+
+
+                                            {% if perms.mailings.delete_mailing %}
+                                                <li class="mx-auto"><a
+                                                        href="{% url 'mailings:mailing_delete' object.pk %}"
+                                                        class="text-danger" data-toggle="tooltip" title=""
+                                                        data-original-title="Delete"><i
+                                                        class="fa-solid fa-trash"
+                                                        style="color: #ff4013;"></i></a>
+                                                </li>
+                                            {% endif %}
                                         </ul>
                                     </td>
                                     {#                                    <td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a></td>#}
