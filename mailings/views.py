@@ -39,8 +39,11 @@ class IndexView(LoginRequiredMixin, TemplateView):
 
         all_mailings = user.mailing_set
         user_clients = user.client_set
+
+        total_articles = Article.objects.count()
+        random_articles_limit = total_articles if total_articles <= 3 else 3
         random_articles = random.sample(
-            list(Article.objects.filter(is_published=True)), 2
+            list(Article.objects.filter(is_published=True)), random_articles_limit
         )
 
         total_mailings = all_mailings.count()
@@ -77,7 +80,7 @@ class MailingListView(LoginRequiredMixin, ListView):
 
 class MailingDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Mailing
-    permission_required = 'mailings.delete_mailing'
+    permission_required = "mailings.delete_mailing"
     success_url = reverse_lazy("mailings:mailings_list")
 
 
@@ -278,7 +281,7 @@ class AudienceCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView
 
 
 @login_required
-@permission_required('mailing.stop_mailing')
+@permission_required("mailing.stop_mailing")
 def stop_mailing(request, pk):
     mailing = Mailing.objects.get(pk=pk)
     mailing.status = Mailing.STATUS_FINISHED
@@ -287,7 +290,7 @@ def stop_mailing(request, pk):
 
 
 @login_required
-@permission_required('mailing.change_mailing')
+@permission_required("mailing.change_mailing")
 def start_mailing(request, pk):
     mailing = Mailing.objects.get(pk=pk)
     mailing.status = Mailing.STATUS_CREATED
