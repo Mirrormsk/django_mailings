@@ -212,12 +212,16 @@ class ClientCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ClientUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class ClientUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Client
     permission_required = "mailings.change_client"
     fields = ("first_name", "last_name", "email", "note")
     success_url = reverse_lazy("mailings:client_list")
     extra_context = {"title": "Изменить данные получателя", "nbar": "clients"}
+
+    def test_func(self):
+        client = self.get_object()
+        return client.creator == self.request.user or self.request.user.is_superuser
 
 
 class ClientDeleteView(
@@ -227,8 +231,8 @@ class ClientDeleteView(
     permission_required = "mailings.delete_client"
     success_url = reverse_lazy("mailings:client_list")
     extra_context = {
-        'title': 'Удаление клиента',
-        'nbar': 'clients',
+        "title": "Удаление клиента",
+        "nbar": "clients",
     }
 
     def test_func(self):
