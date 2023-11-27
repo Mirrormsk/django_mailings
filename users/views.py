@@ -94,3 +94,21 @@ def deactivate_user(request, uid):
         return HttpResponse(f"Пользователь с почтой {user.email} заблокирован.")
 
     return HttpResponse("Пользователь не найден")
+
+
+@permission_required("users.activate_user", raise_exception=True)
+def manager_activate_user(request, pk):
+    UserModel: AbstractUser = get_user_model()
+    try:
+        user = UserModel.objects.get(pk=pk)
+    except (TypeError, ValueError, OverflowError, UserModel.DoesNotExist):
+        user = None
+
+    if user is not None:
+        user.is_active = True
+        user.save()
+        return HttpResponse(
+            f"Пользователь {user.email} активирован!"
+        )
+
+    return HttpResponse("Пользователь не найден")

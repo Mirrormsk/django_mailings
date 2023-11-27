@@ -58,6 +58,11 @@ class Command(BaseCommand):
             name="Can block user",
             content_type=users_content_type,
         )
+        activate_user, _ = Permission.objects.get_or_create(
+            codename="activate_user",
+            name="Can activate user",
+            content_type=users_content_type,
+        )
         add_article, _ = Permission.objects.get_or_create(
             codename="add_article", content_type=article_content_type
         )
@@ -102,6 +107,7 @@ class Command(BaseCommand):
             view_mailings,
             view_users,
             block_users,
+            activate_user,
             stop_mailing,
             start_mailing,
             view_mailing_log,
