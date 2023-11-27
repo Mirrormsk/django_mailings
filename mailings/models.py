@@ -64,7 +64,6 @@ class Mailing(models.Model):
     audience = models.ForeignKey(Audience, verbose_name='аудитория', on_delete=models.CASCADE)
     start_time = models.DateTimeField(verbose_name='время начала')
     end_time = models.DateTimeField(verbose_name='время окончания')
-    # content = models.OneToOneField(Message, on_delete=models.CASCADE, verbose_name='Письмо')
 
     message_title = models.CharField(max_length=150, verbose_name='заголовок')
     message_body = models.TextField(verbose_name='текст рассылки')
