@@ -141,3 +141,13 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 LOGIN_URL = reverse_lazy('users:login')
+
+CACHE_ENABLED = env('CACHE_ENABLED')
+
+if CACHE_ENABLED:
+    CACHES = {
+        "default": {
+            "BACKEND": env('CACHE_BACKEND'),
+            "LOCATION": env('CACHE_LOCATION'),
+        }
+    }
