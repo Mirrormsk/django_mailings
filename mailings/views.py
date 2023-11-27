@@ -197,8 +197,11 @@ class MailingUpdateView(
         return mailing.creator == self.request.user or self.request.user.is_superuser
 
 
-class MailingDetailView(DetailView):
+class MailingDetailView(
+    LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin, DetailView
+):
     model = Mailing
+    permission_required = "mailings.view_mailing"
 
     extra_context = {
         "nbar": "mailings",
@@ -208,6 +211,11 @@ class MailingDetailView(DetailView):
         context_data = super().get_context_data(**kwargs)
         context_data["title"] = f"Рассылка {self.object.name}"
         return context_data
+
+    def test_func(self):
+        mailing = self.get_object()
+        user = self.request.user
+        return mailing.creator == user or manager_or_superuser(user)
 
 
 class ClientCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
