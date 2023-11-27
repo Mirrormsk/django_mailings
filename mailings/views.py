@@ -1,5 +1,6 @@
 import random
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import (
     UserPassesTestMixin,
@@ -10,6 +11,7 @@ from django.forms import SplitDateTimeField
 from django.forms.widgets import SplitDateTimeWidget
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.core.cache import cache
 from django.views.generic import (
     ListView,
     CreateView,
@@ -41,11 +43,24 @@ class IndexView(LoginRequiredMixin, TemplateView):
         all_mailings = user.mailing_set
         user_clients = user.client_set
 
-        total_articles = Article.objects.filter(is_published=True).count()
-        random_articles_limit = total_articles if total_articles <= 3 else 3
-        random_articles = random.sample(
-            list(Article.objects.filter(is_published=True)), random_articles_limit
-        )
+        if settings.CACHE_ENABLED:
+            key_random_articles = "index_page_random_articles"
+            random_articles = cache.get(key_random_articles)
+
+            if random_articles is None:
+                total_articles = Article.objects.filter(is_published=True).count()
+                random_articles_limit = total_articles if total_articles <= 3 else 3
+                random_articles = random.sample(
+                    list(Article.objects.filter(is_published=True)),
+                    random_articles_limit,
+                )
+                cache.set(key_random_articles, random_articles)
+        else:
+            total_articles = Article.objects.filter(is_published=True).count()
+            random_articles_limit = total_articles if total_articles <= 3 else 3
+            random_articles = random.sample(
+                list(Article.objects.filter(is_published=True)), random_articles_limit
+            )
 
         total_mailings = all_mailings.count()
         started_mailings = all_mailings.filter(status="started").count()
