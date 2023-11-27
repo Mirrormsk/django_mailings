@@ -40,7 +40,7 @@ class IndexView(LoginRequiredMixin, TemplateView):
         all_mailings = user.mailing_set
         user_clients = user.client_set
 
-        total_articles = Article.objects.count()
+        total_articles = Article.objects.filter(is_published=True).count()
         random_articles_limit = total_articles if total_articles <= 3 else 3
         random_articles = random.sample(
             list(Article.objects.filter(is_published=True)), random_articles_limit

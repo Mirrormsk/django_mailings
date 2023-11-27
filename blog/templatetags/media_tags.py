@@ -8,4 +8,4 @@ def media_path(path: str):
     """Returns object media url if exists, else photo placeholder"""
     if path:
         return f"/media/{path}"
-    return "/static/img/no_photo.jpg"
+    return "/static/images/no-photo.jpg"
