@@ -39,7 +39,7 @@
         </div><!--//col-->
 
 
-
+        {% if perms.mailings.view_client %}
         <div class="col-6 col-lg-3">
             <div class="app-card app-card-stat shadow-sm h-100">
                 <div class="app-card-body p-3 p-lg-4">
@@ -49,6 +49,8 @@
                 <a class="app-card-link-mask" href="{% url 'mailings:client_list' %}"></a>
             </div><!--//app-card-->
         </div><!--//col-->
+        {% endif %}
+
 
     </div>
     <h4 class="my-3">Новости</h4>

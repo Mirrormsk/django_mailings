@@ -40,8 +40,12 @@ class IndexView(LoginRequiredMixin, TemplateView):
         user = self.request.user
         context_data = super().get_context_data(**kwargs)
 
-        all_mailings = user.mailing_set
-        user_clients = user.client_set
+        if manager_or_superuser(user):
+            all_mailings = Mailing.objects
+            user_clients = Client.objects
+        else:
+            all_mailings = user.mailing_set
+            user_clients = user.client_set
 
         if settings.CACHE_ENABLED:
             key_random_articles = "index_page_random_articles"
